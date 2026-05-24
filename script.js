@@ -1,6 +1,4 @@
-// TYPING EFFECT
-
-const text = "Sundaram Malik — AI Automation & Digital Marketing";
+onst text = "SUNDARAM MALIK // AI AUTOMATION BUILDER";
 
 const typingText = document.getElementById("typing-text");
 
@@ -14,7 +12,7 @@ function typeEffect(){
 
     index++;
 
-    setTimeout(typeEffect,40);
+    setTimeout(typeEffect,50);
 
   }
 
@@ -22,10 +20,9 @@ function typeEffect(){
 
 typeEffect();
 
+// SCROLL ANIMATION
 
-// SCROLL REVEAL
-
-const hiddenElements = document.querySelectorAll(".hidden");
+const hiddenElements = document.querySelectorAll('.hidden');
 
 const observer = new IntersectionObserver((entries)=>{
 
@@ -33,7 +30,7 @@ const observer = new IntersectionObserver((entries)=>{
 
     if(entry.isIntersecting){
 
-      entry.target.classList.add("show");
+      entry.target.classList.add('show');
 
     }
 
@@ -43,20 +40,21 @@ const observer = new IntersectionObserver((entries)=>{
 
 hiddenElements.forEach((el)=>observer.observe(el));
 
-
 // NAVBAR EFFECT
 
-window.addEventListener("scroll",()=>{
+window.addEventListener('scroll',()=>{
 
-  const navbar = document.querySelector(".navbar");
+  const navbar = document.querySelector('.navbar');
 
   if(window.scrollY > 50){
 
-    navbar.style.background = "rgba(0,0,0,0.7)";
+    navbar.style.background = 'rgba(0,0,0,0.7)';
 
-  } else {
+  }
 
-    navbar.style.background = "rgba(0,0,0,0.4)";
+  else{
+
+    navbar.style.background = 'rgba(0,0,0,0.3)';
 
   }
 

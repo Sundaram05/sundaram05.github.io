@@ -1,10 +1,35 @@
-// SCROLL ANIMATION
+// TYPING EFFECT
+
+const text = "Sundaram Malik — AI Automation & Digital Marketing";
+
+const typingText = document.getElementById("typing-text");
+
+let index = 0;
+
+function typeEffect(){
+
+  if(index < text.length){
+
+    typingText.innerHTML += text.charAt(index);
+
+    index++;
+
+    setTimeout(typeEffect,40);
+
+  }
+
+}
+
+typeEffect();
+
+
+// SCROLL REVEAL
 
 const hiddenElements = document.querySelectorAll(".hidden");
 
-const observer = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver((entries)=>{
 
-  entries.forEach((entry) => {
+  entries.forEach((entry)=>{
 
     if(entry.isIntersecting){
 
@@ -16,12 +41,12 @@ const observer = new IntersectionObserver((entries) => {
 
 });
 
-hiddenElements.forEach((el) => observer.observe(el));
+hiddenElements.forEach((el)=>observer.observe(el));
 
 
-// NAVBAR BACKGROUND ON SCROLL
+// NAVBAR EFFECT
 
-window.addEventListener("scroll", function(){
+window.addEventListener("scroll",()=>{
 
   const navbar = document.querySelector(".navbar");
 
@@ -29,39 +54,10 @@ window.addEventListener("scroll", function(){
 
     navbar.style.background = "rgba(0,0,0,0.7)";
 
-  }
-
-  else{
+  } else {
 
     navbar.style.background = "rgba(0,0,0,0.4)";
 
   }
 
 });
-
-
-// TYPING EFFECT
-
-const text = "Building modern AI experiences with clean design.";
-
-const typingText = document.getElementById("typing-text");
-
-let index = 0;
-
-typingText.innerHTML = "";
-
-function typeEffect(){
-
-  if(index < text.length){
-
-    typingText.innerHTML += text.charAt(index);
-
-    index++;
-
-    setTimeout(typeEffect, 40);
-
-  }
-
-}
-
-typeEffect();

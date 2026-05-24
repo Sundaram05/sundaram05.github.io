@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SUNDARAM.EXE — Digital Marketer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #0f0f1a;
+    --bg3: #13131f;
+    --neon-cyan: #00f5ff;
+    --neon-pink: #ff2d78;
+    --neon-yellow: #ffe600;
+    --neon-green: #39ff14;
+    --neon-purple: #bf5fff;
+    --grid-color: rgba(0,245,255,0.04);
+    --text: #e8e8f0;
+    --muted: #7a7a9a;
+    --border: rgba(0,245,255,0.15);
+    --pixel: 2px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.12) 2px,
+      rgba(0,0,0,0.12) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* GRID BACKGROUND */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAVBAR ─────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    background: rgba(10,10,15,0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px var(--neon-cyan);
+  }
+
+  /* ─── HERO ─────────────────────────────────────────── */
+  #hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 20px 60px;
+  }
+
+  .insert-coin {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-yellow);
+    letter-spacing: 3px;
+    margin-bottom: 32px;
+    animation: blink 1.2s step-start infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .hero-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(22px, 5vw, 42px);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-yellow));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(0,245,255,0.4));
+    animation: gradShift 4s linear infinite;
+    background-size: 200% auto;
+  }
+
+  @keyframes gradShift { to { background-position: 200% center; } }
+
+  .hero-title-badge {
+    display: inline-block;
+    background: rgba(0,245,255,0.05);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    padding: 8px 20px;
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    color: var(--neon-pink);
+    letter-spacing: 3px;
+    text-shadow: 0 0 8px var(--neon-pink);
+    margin-bottom: 40px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .typing-wrap {
+    font-family: 'VT323', monospace;
+    font-size: 26px;
+    color: var(--neon-green);
+    text-shadow: 0 0 10px rgba(57,255,20,0.5);
+    min-height: 36px;
+    margin-bottom: 50px;
+    letter-spacing: 1px;
+  }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 12px;
+    height: 22px;
+    background: var(--neon-green);
+    vertical-align: middle;
+    margin-left: 4px;
+    animation: blink 0.8s step-start infinite;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+
+  .btn-pixel {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 14px 24px;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.1s;
+    border: none;
+    background: none;
+  }
+
+  .btn-pixel:active { transform: scale(0.97); }
+
+  .btn-primary {
+    color: var(--bg);
+    background: var(--neon-cyan);
+    box-shadow: 4px 4px 0px var(--neon-pink), 0 0 20px rgba(0,245,255,0.4);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 6px 6px 0px var(--neon-pink), 0 0 30px rgba(0,245,255,0.6);
+    transform: translate(-2px,-2px);
+  }
+
+  .btn-secondary {
+    color: var(--neon-pink);
+    border: 2px solid var(--neon-pink);
+    box-shadow: 4px 4px 0px rgba(255,45,120,0.3), 0 0 15px rgba(255,45,120,0.2);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,45,120,0.1);
+    box-shadow: 6px 6px 0px rgba(255,45,120,0.4), 0 0 25px rgba(255,45,120,0.3);
+    transform: translate(-2px,-2px);
+  }
+
+  .social-links {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    padding: 8px 18px;
+    border: 1px solid;
+    transition: all 0.2s;
+  }
+
+  .social-btn.gh  { color: var(--neon-purple); border-color: rgba(191,95,255,0.3); }
+  .social-btn.li  { color: var(--neon-cyan);   border-color: rgba(0,245,255,0.3); }
+  .social-btn.em  { color: var(--neon-yellow);  border-color: rgba(255,230,0,0.3); }
+
+  .social-btn.gh:hover  { background: rgba(191,95,255,0.1); box-shadow: 0 0 12px rgba(191,95,255,0.3); }
+  .social-btn.li:hover  { background: rgba(0,245,255,0.1);  box-shadow: 0 0 12px rgba(0,245,255,0.3); }
+  .social-btn.em:hover  { background: rgba(255,230,0,0.08); box-shadow: 0 0 12px rgba(255,230,0,0.3); }
+
+  /* ─── SECTION BASE ────────────────────────────────── */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 100px 24px;
+  }
+
+  .section-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    letter-spacing: 4px;
+    color: var(--neon-pink);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    text-shadow: 0 0 8px var(--neon-pink);
+  }
+
+  .section-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(14px, 2.5vw, 22px);
+    color: var(--text);
+    margin-bottom: 50px;
+    line-height: 1.8;
+  }
+
+  .section-title span {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 12px rgba(0,245,255,0.5);
+  }
+
+  /* PIXEL DIVIDER */
+  .pixel-divider {
+    width: 100%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--neon-cyan) 0, var(--neon-cyan) 8px, transparent 8px, transparent 14px);
+    opacity: 0.3;
+    margin: 0 0 60px;
+  }
+
+  /* ─── ABOUT ───────────────────────────────────────── */
+  #about .about-card {
+    background: rgba(15,15,26,0.8);
+    border: 1px solid var(--border);
+    padding: 36px;
+    position: relative;
+    backdrop-filter: blur(10px);
+  }
+
+  #about .about-card::before {
+    content: '> PLAYER_PROFILE.EXE';
+    display: block;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: var(--neon-green);
+    text-shadow: 0 0 6px var(--neon-green);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .about-text {
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    line-height: 1.7;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+
+  .about-text strong {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 6px rgba(0,245,255,0.4);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .stat-box {
+    border: 1px solid var(--border);
+    padding: 16px;
+    text-align: center;
+    background: rgba(0,245,255,0.02);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .stat-box:hover {
+    border-color: var(--neon-cyan);
+    background: rgba(0,245,255,0.05);
+  }
+
+  .stat-num {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 22px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 10px rgba(255,230,0,0.5);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ─── SKILLS ─────────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .skill-card:hover::after { transform: scaleX(1); }
+
+  .skill-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .skill-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    line-height: 1.8;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .skill-tag {
+    font-family: 'VT323', monospace;
+    font-size: 14px;
+    padding: 3px 10px;
+    border: 1px solid;
+    letter-spacing: 1px;
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(0,0,0,0.2);
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .skill-tag:hover { opacity: 1; }
+
+  .skill-bar-wrap { margin-top: 12px; }
+
+  .skill-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: fillBar 1.4s cubic-bezier(0.4,0,0.2,1) both;
+    animation-delay: var(--delay,0s);
+  }
+
+  @keyframes fillBar { from { width: 0 !important; } }
+
+  /* ─── EXPERIENCE ────────────────────────────────── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--neon-cyan) 0, var(--neon-cyan) 6px,
+      transparent 6px, transparent 12px
+    );
+    opacity: 0.4;
+  }
+
+  .exp-card {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 28px;
+    margin-bottom: 24px;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  .exp-card::before {
+    content: '◆';
+    position: absolute;
+    left: -42px;
+    top: 28px;
+    font-size: 14px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px var(--neon-cyan);
+  }
+
+  .exp-card:hover { border-color: var(--border); }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .exp-role {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 6px rgba(255,230,0,0.4);
+    line-height: 1.8;
+  }
+
+  .exp-company {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    text-shadow: 0 0 6px rgba(0,245,255,0.3);
+    margin-top: 6px;
+  }
+
+  .exp-date {
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    color: var(--neon-pink);
+    letter-spacing: 2px;
+    white-space: nowrap;
+    padding: 4px 12px;
+    border: 1px solid rgba(255,45,120,0.3);
+    background: rgba(255,45,120,0.05);
+  }
+
+  .exp-list {
+    list-style: none;
+    margin-top: 10px;
+  }
+
+  .exp-list li {
+    font-family: 'VT323', monospace;
+    font-size: 19px;
+    color: var(--muted);
+    line-height: 1.7;
+    padding-left: 20px;
+    position: relative;
+    letter-spacing: 0.5px;
+  }
+
+  .exp-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--neon-green);
+  }
+
+  /* ─── PROJECTS ──────────────────────────────────── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .project-card {
+    background: var(--bg3);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.3s;
+    cursor: pointer;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,245,255,0.2);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-num {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 32px;
+    color: rgba(0,245,255,0.08);
+    position: absolute;
+    top: 16px; right: 20px;
+    line-height: 1;
+  }
+
+  .project-tag {
+    display: inline-block;
+    font-family: 'VT323', monospace;
+    font-size: 14px;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+    background: rgba(0,245,255,0.08);
+    color: var(--neon-cyan);
+    border: 1px solid rgba(0,245,255,0.2);
+  }
+
+  .project-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--text);
+    line-height: 1.9;
+    margin-bottom: 12px;
+  }
+
+  .project-desc {
+    font-family: 'VT323', monospace;
+    font-size: 19px;
+    color: var(--muted);
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .project-link {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .project-link:hover {
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    background: rgba(0,245,255,0.05);
+  }
+
+  /* ─── CONTACT ───────────────────────────────────── */
+  #contact .contact-box {
+    background: rgba(15,15,26,0.9);
+    border: 1px solid var(--border);
+    padding: 48px 40px;
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(10px);
+  }
+
+  #contact .contact-box::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, rgba(0,245,255,0.15), rgba(255,45,120,0.15));
+    z-index: -1;
+  }
+
+  .contact-tagline {
+    font-family: 'VT323', monospace;
+    font-size: 26px;
+    color: var(--neon-green);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-shadow: 0 0 8px rgba(57,255,20,0.3);
+  }
+
+  .contact-heading {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(12px, 2vw, 18px);
+    color: var(--text);
+    line-height: 2;
+    margin-bottom: 36px;
+  }
+
+  .contact-heading span { color: var(--neon-pink); text-shadow: 0 0 10px rgba(255,45,120,0.4); }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    padding: 12px 22px;
+    border: 1px solid;
+    transition: all 0.2s;
+  }
+
+  /* ─── FOOTER ────────────────────────────────────── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px rgba(0,245,255,0.4);
+    letter-spacing: 2px;
+  }
+
+  .footer-copy {
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  .footer-socials { display: flex; gap: 16px; }
+
+  .footer-social-link {
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 2px;
+    transition: color 0.2s;
+  }
+
+  .footer-social-link:hover { color: var(--neon-cyan); }
+
+  /* ─── SCROLL ANIMATIONS ─────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── GLITCH EFFECT ─────────────────────────────── */
+  @keyframes glitch {
+    0%   { clip-path: inset(20% 0 80% 0); transform: translate(-4px,0); }
+    20%  { clip-path: inset(50% 0 30% 0); transform: translate(4px,0); }
+    40%  { clip-path: inset(10% 0 70% 0); transform: translate(-2px,0); }
+    60%  { clip-path: inset(80% 0 10% 0); transform: translate(3px,0); }
+    80%  { clip-path: inset(40% 0 45% 0); transform: translate(-3px,0); }
+    100% { clip-path: inset(0 0 0 0);    transform: translate(0,0); }
+  }
+
+  /* MOBILE */
+  @media(max-width:600px) {
+    nav { padding: 12px 16px; }
+    .nav-links { gap: 14px; }
+    .nav-links a { font-size: 16px; }
+    section { padding: 70px 16px; }
+    #about .about-card { padding: 20px; }
+    #contact .contact-box { padding: 28px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ──────────────────────────────────────── -->
+<nav>
+  <a class="nav-logo" href="#">SM.EXE</a>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#experience">XP</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─────────────────────────────────────── -->
+<section id="hero">
+  <p class="insert-coin">▶ INSERT COIN TO CONTINUE ◀</p>
+  <h1 class="hero-name">SUNDARAM MALIK</h1>
+  <div class="hero-title-badge">DIGITAL MARKETER</div>
+  <div class="typing-wrap" id="typeTarget">
+    <span id="typeText"></span><span class="cursor-blink"></span>
+  </div>
+  <div class="hero-btns">
+    <a href="#projects" class="btn-pixel btn-primary">▶ VIEW PROJECTS</a>
+    <a href="https://drive.google.com/file/d/YOUR_RESUME_ID/view" target="_blank" class="btn-pixel btn-secondary">⬇ DOWNLOAD RESUME</a>
+  </div>
+  <div class="social-links">
+    <a href="https://github.com/Sundaram05" target="_blank" class="social-btn gh">⌥ GITHUB</a>
+    <a href="https://www.linkedin.com/in/sundarammalik/" target="_blank" class="social-btn li">⊞ LINKEDIN</a>
+    <a href="mailto:maliksundaram@gmail.com" class="social-btn em">✉ EMAIL</a>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─────────────────────────────────────── -->
+<section id="about">
+  <div class="section-label">// PLAYER PROFILE</div>
+  <h2 class="section-title">ABOUT <span>ME</span></h2>
+  <div class="pixel-divider"></div>
+  <div class="about-card reveal">
+    <p class="about-text">
+      Results-driven <strong>digital marketer</strong> from South Delhi, India.<br><br>
+      I specialize in <strong>email outreach automation</strong>, <strong>web scraping</strong>, and <strong>performance marketing</strong> — blending creative instincts with a technical mindset to build scalable marketing systems.<br><br>
+      From setting up complete <strong>cold email infrastructure</strong> to building Python scrapers that extract data from 5,000+ websites, I thrive at the intersection of marketing and tech. Currently sharpening my edge with Meta Ads, Google Ads, and growth automation.
+    </p>
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-num">5K+</span>
+        <span class="stat-label">SITES SCRAPED</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">2+</span>
+        <span class="stat-label">INTERNSHIPS</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">META</span>
+        <span class="stat-label">ADS CERTIFIED</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">SEO</span>
+        <span class="stat-label">ON/OFF/TECH</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SKILLS ─────────────────────────────────────── -->
+<section id="skills">
+  <div class="section-label">// POWER-UPS</div>
+  <h2 class="section-title">SKILL <span>TREE</span></h2>
+  <div class="pixel-divider"></div>
+  <div class="skills-grid">
+
+    <div class="skill-card reveal" style="--accent: var(--neon-cyan)">
+      <span class="skill-icon">📧</span>
+      <div class="skill-name">EMAIL MARKETING</div>
+      <div class="skill-tags">
+        <span class="skill-tag">APOLLO.IO</span>
+        <span class="skill-tag">INSTANTLY.AI</span>
+        <span class="skill-tag">BOUNCIFY</span>
+        <span class="skill-tag">STORELEADS</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%;--delay:0.1s"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--accent: var(--neon-pink)">
+      <span class="skill-icon">🕷️</span>
+      <div class="skill-name">WEB SCRAPING</div>
+      <div class="skill-tags">
+        <span class="skill-tag">PYTHON</span>
+        <span class="skill-tag">APPS SCRIPT</span>
+        <span class="skill-tag">CHATGPT</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%;--delay:0.2s"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--accent: var(--neon-yellow)">
+      <span class="skill-icon">📣</span>
+      <div class="skill-name">META ADS</div>
+      <div class="skill-tags">
+        <span class="skill-tag">FACEBOOK</span>
+        <span class="skill-tag">INSTAGRAM</span>
+        <span class="skill-tag">CTWA</span>
+        <span class="skill-tag">PIXEL</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:75%;--delay:0.3s"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--accent: var(--neon-green)">
+      <span class="skill-icon">🔍</span>
+      <div class="skill-name">SEO</div>
+      <div class="skill-tags">
+        <span class="skill-tag">ON-PAGE</span>
+        <span class="skill-tag">OFF-PAGE</span>
+        <span class="skill-tag">TECHNICAL</span>
+        <span class="skill-tag">GSC</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:82%;--delay:0.4s"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--accent: var(--neon-purple)">
+      <span class="skill-icon">🎨</span>
+      <div class="skill-name">CREATIVE DESIGN</div>
+      <div class="skill-tags">
+        <span class="skill-tag">CANVA</span>
+        <span class="skill-tag">FIGMA</span>
+        <span class="skill-tag">PHOTOSHOP</span>
+        <span class="skill-tag">PREMIERE</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:78%;--delay:0.5s"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--accent: #ff8c00">
+      <span class="skill-icon">🌐</span>
+      <div class="skill-name">WEB DEVELOPMENT</div>
+      <div class="skill-tags">
+        <span class="skill-tag">WORDPRESS</span>
+        <span class="skill-tag">SHOPIFY</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:70%;--delay:0.6s"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--accent: #4ec9ff">
+      <span class="skill-icon">💰</span>
+      <div class="skill-name">GOOGLE ADS</div>
+      <div class="skill-tags">
+        <span class="skill-tag">KEYWORD RES.</span>
+        <span class="skill-tag">BIDDING</span>
+        <span class="skill-tag">COPYWRITING</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:72%;--delay:0.7s"></div></div>
+      </div>
+    </div>
+
+    <div class="skill-card reveal" style="--accent: var(--neon-pink)">
+      <span class="skill-icon">📱</span>
+      <div class="skill-name">SOCIAL MEDIA</div>
+      <div class="skill-tags">
+        <span class="skill-tag">CONTENT CAL.</span>
+        <span class="skill-tag">REELS</span>
+        <span class="skill-tag">LINKEDIN ADS</span>
+      </div>
+      <div class="skill-bar-wrap">
+        <div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%;--delay:0.8s"></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── EXPERIENCE ──────────────────────────────────── -->
+<section id="experience">
+  <div class="section-label">// XP LOG</div>
+  <h2 class="section-title">WORK <span>EXPERIENCE</span></h2>
+  <div class="pixel-divider"></div>
+  <div class="timeline">
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">EMAIL MARKETING & WEB SCRAPING INTERN</div>
+          <div class="exp-company">QUICKREPLY.AI</div>
+        </div>
+        <div class="exp-date">FEB — MAY 2025</div>
+      </div>
+      <ul class="exp-list">
+        <li>Set up complete email infrastructure from scratch including domain warm-up & deliverability</li>
+        <li>Executed targeted outreach campaigns using Apollo.io, Instantly.ai, and Storeleads.app</li>
+        <li>Ensured high deliverability with Bouncify.io email validation workflows</li>
+        <li>Built scalable Python & Google Apps Script scrapers extracting data from 5,000+ websites</li>
+        <li>Leveraged ChatGPT for multilingual support (Spanish, Portuguese) and logic optimization</li>
+        <li>Supported Click-to-WhatsApp (CTWA) Meta Ad setup and pixel-based conversion tracking</li>
+      </ul>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">MARKETING ASSOCIATE</div>
+          <div class="exp-company">NETCOM LEARNING</div>
+        </div>
+        <div class="exp-date">JUN — JUL 2025</div>
+      </div>
+      <ul class="exp-list">
+        <li>Drove brand growth through email marketing, SEO, CRO, and LinkedIn ad campaigns</li>
+        <li>Managed social media content and product marketing initiatives</li>
+        <li>Supported lead generation pipelines and performance tracking</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── PROJECTS ──────────────────────────────────── -->
+<section id="projects">
+  <div class="section-label">// QUESTS COMPLETED</div>
+  <h2 class="section-title">FEATURED <span>PROJECTS</span></h2>
+  <div class="pixel-divider"></div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">01</div>
+      <span class="project-tag">WEB SCRAPING</span>
+      <div class="project-name">AGENCY ATTRIBUTION SCRAPER</div>
+      <p class="project-desc">Scalable Google Apps Script + Python pipeline extracting agency data from 5,000+ websites with multilingual support (EN/ES/PT) and auto-resume functionality.</p>
+      <div class="project-links">
+        <a href="https://github.com/Sundaram05" target="_blank" class="project-link">⌥ GITHUB</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">02</div>
+      <span class="project-tag">EMAIL AUTOMATION</span>
+      <div class="project-name">COLD EMAIL OUTREACH SYSTEM</div>
+      <p class="project-desc">Built end-to-end cold email infrastructure from scratch — domain health, DMARC/SPF/DKIM setup, validation via Bouncify, and sequenced campaigns using Instantly.ai.</p>
+      <div class="project-links">
+        <a href="https://github.com/Sundaram05" target="_blank" class="project-link">⌥ GITHUB</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">03</div>
+      <span class="project-tag">META ADS</span>
+      <div class="project-name">SOCIAL MEDIA PAID CAMPAIGNS</div>
+      <p class="project-desc">Managed Meta Ads for Tira — Facebook & Instagram campaigns with custom creatives (statics + reels), CTWA ads for WhatsApp lead gen, and pixel-based conversion tracking.</p>
+      <div class="project-links">
+        <a href="https://github.com/Sundaram05" target="_blank" class="project-link">⌥ GITHUB</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">04</div>
+      <span class="project-tag">SOCIAL MEDIA ORGANIC</span>
+      <div class="project-name">LE 15 PATISSERIE — SOCIAL GROWTH</div>
+      <p class="project-desc">Crafted full content calendar for Le 15 Patisserie — static posts, reels, polls, and memes to drive organic engagement and community growth on Instagram.</p>
+      <div class="project-links">
+        <a href="https://github.com/Sundaram05" target="_blank" class="project-link">⌥ GITHUB</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">05</div>
+      <span class="project-tag">SEO + CRO</span>
+      <div class="project-name">ON-PAGE / OFF-PAGE SEO AUDITS</div>
+      <p class="project-desc">Conducted technical SEO audits and on-page optimization work — keyword research, GSC analysis, off-page link building, and CRO improvements for client websites.</p>
+      <div class="project-links">
+        <a href="https://github.com/Sundaram05" target="_blank" class="project-link">⌥ GITHUB</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">06</div>
+      <span class="project-tag">GOOGLE ADS</span>
+      <div class="project-name">GOOGLE SEARCH AD CAMPAIGNS</div>
+      <p class="project-desc">Keyword research, ad copy writing, bidding strategy management, and performance tracking for Google Search Ads across multiple verticals.</p>
+      <div class="project-links">
+        <a href="https://github.com/Sundaram05" target="_blank" class="project-link">⌥ GITHUB</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── CONTACT ──────────────────────────────────── -->
+<section id="contact">
+  <div class="section-label">// NEW GAME+</div>
+  <h2 class="section-title">LET'S <span>CONNECT</span></h2>
+  <div class="pixel-divider"></div>
+  <div class="contact-box reveal">
+    <p class="contact-tagline">▶ PLAYER 2 HAS ENTERED THE GAME</p>
+    <h3 class="contact-heading">HAVE A PROJECT? <br>LET'S BUILD SOMETHING <span>EPIC</span></h3>
+    <div class="contact-links">
+      <a href="mailto:maliksundaram@gmail.com" class="contact-link" style="color: var(--neon-yellow); border-color: rgba(255,230,0,0.3); background: rgba(255,230,0,0.04);">
+        ✉ maliksundaram@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/sundarammalik/" target="_blank" class="contact-link" style="color: var(--neon-cyan); border-color: rgba(0,245,255,0.3); background: rgba(0,245,255,0.04);">
+        ⊞ LINKEDIN
+      </a>
+      <a href="https://github.com/Sundaram05" target="_blank" class="contact-link" style="color: var(--neon-purple); border-color: rgba(191,95,255,0.3); background: rgba(191,95,255,0.04);">
+        ⌥ GITHUB
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">SUNDARAM.EXE</div>
+    <div class="footer-socials">
+      <a href="https://github.com/Sundaram05" target="_blank" class="footer-social-link">GITHUB</a>
+      <span style="color:var(--muted)">·</span>
+      <a href="https://www.linkedin.com/in/sundarammalik/" target="_blank" class="footer-social-link">LINKEDIN</a>
+      <span style="color:var(--muted)">·</span>
+      <a href="mailto:maliksundaram@gmail.com" class="footer-social-link">EMAIL</a>
+    </div>
+    <p class="footer-copy">© 2025 SUNDARAM MALIK — ALL RIGHTS RESERVED — SOUTH DELHI, INDIA</p>
+    <p class="footer-copy" style="font-size:14px; margin-top:-8px;">BUILT WITH ♥ AND TOO MUCH CAFFEINE</p>
+  </div>
+</footer>
+
+<script>
+// ─── TYPING ANIMATION
+const lines = [
+  "EMAIL MARKETING WIZARD ✦",
+  "WEB SCRAPING ENGINEER ⚙",
+  "META ADS SPECIALIST ◈",
+  "GROWTH HACKER ▸▸",
+  "DIGITAL MARKETING PRO ★"
+];
+let li = 0, ci = 0, deleting = false;
+const el = document.getElementById('typeText');
+
+function type() {
+  const cur = lines[li];
+  if (!deleting) {
+    el.textContent = cur.slice(0, ++ci);
+    if (ci === cur.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    el.textContent = cur.slice(0, --ci);
+    if (ci === 0) { deleting = false; li = (li + 1) % lines.length; }
+  }
+  setTimeout(type, deleting ? 38 : 72);
+}
+type();
+
+// ─── SCROLL REVEAL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── PIXEL CURSOR TRAIL (subtle)
+const canvas = document.createElement('canvas');
+canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9998;';
+document.body.appendChild(canvas);
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; });
+
+let particles = [];
+window.addEventListener('mousemove', e => {
+  if (Math.random() > 0.6) return;
+  particles.push({ x: e.clientX, y: e.clientY, life: 1, color: ['#00f5ff','#ff2d78','#ffe600','#39ff14'][Math.floor(Math.random()*4)] });
+});
+
+(function loop() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles = particles.filter(p => p.life > 0.02);
+  particles.forEach(p => {
+    ctx.globalAlpha = p.life * 0.7;
+    ctx.fillStyle = p.color;
+    const s = p.life * 4;
+    ctx.fillRect(p.x - s/2, p.y - s/2, s, s);
+    p.life *= 0.88;
+  });
+  requestAnimationFrame(loop);
+})();
+
+// ─── RANDOM GLITCH FLICKER on hero name
+const heroName = document.querySelector('.hero-name');
+setInterval(() => {
+  heroName.style.animation = 'none';
+  setTimeout(() => { heroName.style.animation = ''; }, 50);
+  if (Math.random() > 0.6) {
+    heroName.style.filter = `drop-shadow(0 0 20px rgba(255,45,120,0.7))`;
+    setTimeout(() => { heroName.style.filter = ''; }, 100);
+  }
+}, 4500);
+</script>
+</body>
+</html>

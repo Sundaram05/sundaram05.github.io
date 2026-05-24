@@ -701,6 +701,131 @@
     transition: all 0.2s;
   }
 
+  /* ─── CONTACT FORM ──────────────────────────────── */
+  .contact-form-wrap {
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+    padding-top: 36px;
+    text-align: left;
+  }
+
+  .form-label-top {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--neon-green);
+    letter-spacing: 3px;
+    text-align: center;
+    margin-bottom: 28px;
+    text-shadow: 0 0 6px rgba(57,255,20,0.3);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--neon-cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(0,245,255,0.15);
+    color: var(--text);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 15px;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: none;
+    width: 100%;
+    letter-spacing: 1px;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(122,122,154,0.5);
+    font-size: 14px;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 12px rgba(0,245,255,0.15), inset 0 0 8px rgba(0,245,255,0.03);
+  }
+
+  .form-group textarea { height: 130px; }
+
+  .btn-submit {
+    width: 100%;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 18px;
+    background: var(--neon-cyan);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px var(--neon-pink);
+    transition: transform 0.1s, box-shadow 0.1s;
+    margin-top: 8px;
+  }
+
+  .btn-submit:hover {
+    transform: translate(-2px,-2px);
+    box-shadow: 6px 6px 0px var(--neon-pink);
+  }
+
+  .btn-submit:active {
+    transform: translate(2px,2px);
+    box-shadow: 2px 2px 0px var(--neon-pink);
+  }
+
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 28px;
+    border: 1px solid var(--neon-green);
+    background: rgba(57,255,20,0.04);
+    margin-top: 20px;
+  }
+
+  .form-success p {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--neon-green);
+    line-height: 2;
+    text-shadow: 0 0 8px rgba(57,255,20,0.4);
+  }
+
+  .form-error-msg {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--neon-pink);
+    letter-spacing: 1px;
+    margin-top: 8px;
+    display: none;
+    text-align: center;
+  }
+
+  @media(max-width:600px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
   /* ─── FOOTER ────────────────────────────────────── */
   footer {
     position: relative;
@@ -1094,6 +1219,37 @@
         ⌥ GITHUB
       </a>
     </div>
+
+    <!-- CONTACT FORM -->
+    <div class="contact-form-wrap">
+      <p class="form-label-top">▶ OR DROP A MESSAGE DIRECTLY</p>
+      <form id="contactForm" action="https://formspree.io/f/xwvzqdjw" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">YOUR NAME</label>
+            <input type="text" id="fname" name="name" placeholder="e.g. John Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="femail">YOUR EMAIL</label>
+            <input type="email" id="femail" name="email" placeholder="e.g. john@email.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fsubject">SUBJECT</label>
+          <input type="text" id="fsubject" name="subject" placeholder="What's this about?" required />
+        </div>
+        <div class="form-group">
+          <label for="fmessage">MESSAGE</label>
+          <textarea id="fmessage" name="message" placeholder="Tell me about your project, idea, or opportunity..." required></textarea>
+        </div>
+        <p class="form-error-msg" id="formError">▸ TRANSMISSION FAILED. CHECK YOUR INPUTS AND RETRY.</p>
+        <button type="submit" class="btn-submit" id="submitBtn">▶ SEND TRANSMISSION</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <p>✔ MESSAGE RECEIVED!<br><br>I'LL GET BACK TO YOU SHORTLY.<br>GAME ON! 🕹️</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1171,6 +1327,38 @@ window.addEventListener('mousemove', e => {
   });
   requestAnimationFrame(loop);
 })();
+
+// ─── CONTACT FORM SUBMISSION via Formspree
+const form = document.getElementById('contactForm');
+const successBox = document.getElementById('formSuccess');
+const errorMsg = document.getElementById('formError');
+const submitBtn = document.getElementById('submitBtn');
+
+if (form) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.textContent = '... TRANSMITTING';
+    submitBtn.disabled = true;
+    errorMsg.style.display = 'none';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        successBox.style.display = 'block';
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (err) {
+      errorMsg.style.display = 'block';
+      submitBtn.textContent = '▶ SEND TRANSMISSION';
+      submitBtn.disabled = false;
+    }
+  });
+}
 
 // ─── RANDOM GLITCH FLICKER on hero name
 const heroName = document.querySelector('.hero-name');
